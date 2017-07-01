@@ -42,24 +42,38 @@ public class FragmentDetalles extends DetailsFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initBackground();
-        mSelectedMovie = (Movie) getActivity().getIntent()
-                .getSerializableExtra(MOVIE);
+        Bundle extras = getActivity().getIntent().getExtras();
+        if (extras != null) {
+            mSelectedMovie = (Movie) getActivity().getIntent()
+                    .getSerializableExtra(MOVIE);
+        } else {
+            int selectedIndex = Integer.parseInt(getActivity().getIntent().getData().getLastPathSegment());
+            int indice = 0;
+            for (Movie movie : MovieList.list) {
+                indice++;
+                if (indice == selectedIndex) {
+                    mSelectedMovie = movie;
+                }
+            }
+        }
         updateBackground(mSelectedMovie.getBackgroundImageURI().toString());
         mDorPresenter = new DetailsOverviewRowPresenter(new DetailsDescriptionPresenter());
         mMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
         cargarDetalles(mSelectedMovie);
         mDorPresenter.setSharedElementEnterTransition(getActivity(), ActividadDetalles.SHARED_ELEMENT_NAME);
-        mDorPresenter.setOnActionClickedListener(new OnActionClickedListener() { @Override
-        public void onActionClicked(Action action) {
-            if (action.getId() == ACTION_WATCH_TRAILER) {
-                Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
-                intent.putExtra(getResources().getString(R.string.movie),
-                        mSelectedMovie);
-                intent.putExtra(getResources().getString(R.string.should_start),true);
-                        startActivity(intent);
+        mDorPresenter.setOnActionClickedListener(new OnActionClickedListener() {
+            @Override
+            public void onActionClicked(Action action) {
+                if (action.getId() == ACTION_WATCH_TRAILER) {
+                    Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
+                    intent.putExtra(getResources().getString(R.string.movie),
+                            mSelectedMovie);
+                    intent.putExtra(getResources().getString(R.string.should_start), true);
+                    startActivity(intent);
+                }
             }
-        } });
+        });
     }
 
     private void initBackground() {
