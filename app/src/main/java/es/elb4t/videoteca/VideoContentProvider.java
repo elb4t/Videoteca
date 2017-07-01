@@ -8,14 +8,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import static java.security.AccessController.getContext;
 
 /**
  * Created by eloy on 1/7/17.
  */
 
 public class VideoContentProvider extends ContentProvider {
-    public static String AUTHORITY = "com.example.videoteca";
+    public static String AUTHORITY = "es.elb4t.videoteca";
     private static final int SEARCH_SUGGEST = 0;
     private static final int REFRESH_SHORTCUT = 1;
     private static final UriMatcher URI_MATCHER = buildUriMatcher();
