@@ -54,6 +54,9 @@
             android:name=".VideoContentProvider"
             android:authorities="es.elb4t.videoteca"
             android:exported="true" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
